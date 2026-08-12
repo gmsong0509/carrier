@@ -2,6 +2,8 @@
 
 Carrier GreenON은 가상의 캐리어 에어컨 상태를 이용해 친환경 냉방 미션을 수행하고, GREEN POINT를 모아 리워드를 구매하는 모바일 우선 웹앱입니다. 실제 에어컨 API에는 연결하지 않습니다.
 
+배포 URL: <https://carrier-greenon-jktv.onrender.com>
+
 ## 주요 흐름
 
 회원가입/로그인 → 서울 현재 날씨와 가상 에어컨 확인 → 오늘의 미션 참여 → 30분 단위 시뮬레이션 → 미션 성공 및 포인트 적립 → GREEN WALLET 확인 → REWARD SHOP 구매 → 구매내역과 GREEN REPORT 확인
@@ -45,6 +47,9 @@ npm test
 ## Render 배포
 
 저장소 루트의 `render.yaml`을 Blueprint로 연결하거나 Static Site를 직접 생성합니다.
+
+- GitHub 저장소: <https://github.com/gmsong0509/carrier>
+- 현재 Render 서비스: <https://carrier-greenon-jktv.onrender.com>
 
 - Build Command: `npm run build`
 - Publish Directory: `dist`
