@@ -51,7 +51,7 @@ const publicFiles = [
   "app.js",
   "supabase-client.js",
   "weather-service.js",
-  "assets/eco-polar-bear-pruni.png",
+  "assets/eco-polar-bear-pruni-cutout.png",
 ];
 
 await rm(outputRoot, { recursive: true, force: true });
