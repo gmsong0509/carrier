@@ -50,6 +50,7 @@ const publicFiles = [
   "styles.css",
   "app.js",
   "supabase-client.js",
+  "environment-data.js",
   "weather-service.js",
   "assets/eco-polar-bear-pruni-cutout.png",
 ];

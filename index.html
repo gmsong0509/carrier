@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="./styles.css" />
     <script src="./runtime-config.js"></script>
     <script src="./app.js" defer></script>
+    <script src="./environment-data.js" defer></script>
     <script src="./weather-service.js" defer></script>
     <script type="module" src="./supabase-client.js"></script>
   </head>
@@ -164,6 +165,82 @@
             <p class="weather-card__guide" data-weather-guide>
               더운 날에도 26°C와 AUTO 바람을 유지해 에너지를 아껴 보세요.
             </p>
+
+            <div class="hourly-forecast">
+              <div class="environment-section-heading">
+                <div>
+                  <p class="section-kicker">HOURLY FORECAST</p>
+                  <h3>시간대별 날씨</h3>
+                </div>
+                <span class="data-source-badge" data-weather-data-badge>불러오는 중</span>
+              </div>
+              <div
+                class="hourly-forecast__scroll"
+                data-hourly-weather
+                role="list"
+                tabindex="0"
+                aria-label="현재 시간부터 시간대별 날씨"
+              >
+                <article class="hourly-weather-card is-current" role="listitem">
+                  <strong>지금</strong>
+                  <span class="hourly-weather-card__icon" aria-hidden="true">⛅</span>
+                  <b>29℃</b>
+                  <small>강수 10%</small>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section class="air-quality-card" data-air-quality-card aria-labelledby="air-quality-title">
+            <div class="environment-section-heading">
+              <div>
+                <p class="section-kicker">SEOUL AIR QUALITY</p>
+                <h2 id="air-quality-title">현재 대기질</h2>
+              </div>
+              <span class="data-source-badge is-demo">데모 데이터</span>
+            </div>
+
+            <div class="air-quality-grid">
+              <article class="air-quality-metric">
+                <div class="air-quality-metric__title">
+                  <span aria-hidden="true">🌿</span>
+                  <div>
+                    <strong>미세먼지</strong>
+                    <small>PM10</small>
+                  </div>
+                </div>
+                <p><b data-air-quality-pm10>28</b> <span>㎍/㎥</span></p>
+                <span class="quality-badge is-good" data-air-quality-pm10-status>좋음</span>
+              </article>
+
+              <article class="air-quality-metric">
+                <div class="air-quality-metric__title">
+                  <span aria-hidden="true">💧</span>
+                  <div>
+                    <strong>초미세먼지</strong>
+                    <small>PM2.5</small>
+                  </div>
+                </div>
+                <p><b data-air-quality-pm25>14</b> <span>㎍/㎥</span></p>
+                <span class="quality-badge is-good" data-air-quality-pm25-status>좋음</span>
+              </article>
+            </div>
+
+            <div class="air-quality-summary">
+              <span>종합 대기질 상태</span>
+              <strong class="quality-badge is-good" data-air-quality-overall>좋음</strong>
+            </div>
+          </section>
+
+          <section class="green-air-guide" data-green-air-guide aria-labelledby="green-air-guide-title">
+            <div class="green-air-guide__icon" aria-hidden="true">🍃</div>
+            <div>
+              <p class="section-kicker">TODAY'S GREEN AIR GUIDE</p>
+              <h2 id="green-air-guide-title" data-green-air-guide-title>환기 후 GREEN 냉방을 시작해요</h2>
+              <p data-green-air-guide-message>
+                현재 대기질이 좋아요. 짧게 환기한 뒤 26℃ 적정 냉방을 실천해보세요.
+              </p>
+            </div>
           </section>
 
           <section class="aircon-card" data-aircon-card aria-labelledby="aircon-title">

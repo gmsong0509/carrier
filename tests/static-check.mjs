@@ -11,11 +11,12 @@ async function readProjectFile(fileName) {
   return readFile(path.join(projectRoot, fileName), "utf8");
 }
 
-const [html, css, app, supabase, weather, schema, renderBlueprint, buildScript] = await Promise.all([
+const [html, css, app, supabase, environmentData, weather, schema, renderBlueprint, buildScript] = await Promise.all([
   readProjectFile("index.html"),
   readProjectFile("styles.css"),
   readProjectFile("app.js"),
   readProjectFile("supabase-client.js"),
+  readProjectFile("environment-data.js"),
   readProjectFile("weather-service.js"),
   readProjectFile("supabase/schema.sql"),
   readProjectFile("render.yaml"),
@@ -26,6 +27,7 @@ const characterImage = await stat(path.join(projectRoot, "assets", "eco-polar-be
 
 // 세 파일을 실행하지 않고 파싱해 배포 전에 문법 오류를 잡습니다.
 new vm.Script(app, { filename: "app.js" });
+new vm.Script(environmentData, { filename: "environment-data.js" });
 new vm.Script(weather, { filename: "weather-service.js" });
 new vm.Script(`(async () => {${supabase}})`, { filename: "supabase-client.js" });
 
@@ -69,6 +71,12 @@ assert.match(css, /\.nav-item\.is-active\s*{[^}]*var\(--green-800\)[^}]*var\(--g
 assert.match(css, /\.time-simulation-button\s*{[^}]*var\(--blue-600\)[^}]*var\(--blue-800\)/s, "에어컨 시간 제어가 Blue 중심이 아닙니다.");
 assert.match(css, /\.aircon-card\.is-danger/, "에어컨 비정상 Red 상태가 없습니다.");
 assert.match(css, /\.weather-card\.is-danger/, "날씨 오류 Red 상태가 없습니다.");
+assert.match(css, /\.hourly-forecast__scroll\s*{[^}]*overflow-x:\s*auto/s, "시간대별 날씨의 모바일 가로 스크롤이 없습니다.");
+assert.match(css, /\.hourly-weather-card\.is-current/, "현재 시간 예보의 강조 상태가 없습니다.");
+assert.match(css, /\.quality-badge\.is-good/, "대기질 좋음 상태 색상이 없습니다.");
+assert.match(css, /\.quality-badge\.is-normal/, "대기질 보통 상태 색상이 없습니다.");
+assert.match(css, /\.quality-badge\.is-bad/, "대기질 나쁨 상태 색상이 없습니다.");
+assert.match(css, /\.quality-badge\.is-very-bad/, "대기질 매우 나쁨 상태 색상이 없습니다.");
 assert.match(css, /@media\s*\(min-width:\s*\d+px\)/, "모바일 우선 반응형 구간이 없습니다.");
 
 // 실제 모바일 기기와 같은 좁은 화면에서도 레이아웃의 필수 조건이 유지되는지 확인합니다.
@@ -86,6 +94,42 @@ assert.equal((html.match(/data-nav-view=/g) || []).length, 4, "모바일 하단 
 assert.match(html, /class="hero-character"[\s\S]*src="assets\/eco-polar-bear-pruni-cutout\.png"/, "프루니 캐릭터가 홈 히어로에 없습니다.");
 assert.match(css, /\.hero-character\s*{[^}]*object-fit:\s*contain/s, "프루니 캐릭터의 반응형 표시 규칙이 없습니다.");
 assert.ok(characterImage.size > 0, "프루니 캐릭터 이미지 파일이 비어 있습니다.");
+for (const environmentHook of [
+  "data-hourly-weather",
+  "data-air-quality-pm10",
+  "data-air-quality-pm25",
+  "data-air-quality-overall",
+  "data-green-air-guide-message",
+]) {
+  assert.ok(html.includes(environmentHook), `환경 정보에 필요한 ${environmentHook} 요소가 없습니다.`);
+}
+
+// 분리된 데이터 모듈을 브라우저 없이 실행해 대기질 경계값과 가이드 조건을 검증합니다.
+const environmentContext = vm.createContext({
+  window: {},
+  URL,
+  URLSearchParams,
+  console: { warn() {} },
+});
+new vm.Script(environmentData, { filename: "environment-data.js" }).runInContext(environmentContext);
+const environmentApi = environmentContext.window.greenOnEnvironmentData;
+const selectedForecast = environmentApi.selectHourlyForecast(
+  {
+    time: ["2026-08-12T12:00", "2026-08-12T13:00", "2026-08-12T14:00", "2026-08-12T15:00"],
+    temperature_2m: [28, 29, 30, 31],
+    precipitation_probability: [10, 20, 30, 40],
+    weather_code: [0, 1, 2, 3],
+  },
+  "2026-08-12T13:30",
+);
+assert.equal(selectedForecast[0].time, "2026-08-12T13:00", "현재 시각에 해당하는 시간대 예보를 선택하지 못했습니다.");
+assert.equal(selectedForecast[0].isCurrent, true, "첫 시간대 예보가 현재 카드로 표시되지 않습니다.");
+assert.equal(environmentApi.classifyAirQuality(30, "pm10").key, "good", "PM10 좋음 경계값이 다릅니다.");
+assert.equal(environmentApi.classifyAirQuality(31, "pm10").key, "normal", "PM10 보통 경계값이 다릅니다.");
+assert.equal(environmentApi.classifyAirQuality(76, "pm25").key, "very-bad", "PM2.5 매우 나쁨 경계값이 다릅니다.");
+assert.equal(environmentApi.getGreenAirGuide(29, { pm10: 28, pm25: 14 }).tone, "good", "좋은 대기질 가이드가 다릅니다.");
+assert.equal(environmentApi.getGreenAirGuide(34, { pm10: 28, pm25: 14 }).tone, "warm", "고온 가이드가 다릅니다.");
+assert.equal(environmentApi.getGreenAirGuide(29, { pm10: 100, pm25: 14 }).tone, "caution", "미세먼지 나쁨 가이드가 다릅니다.");
 
 // 조작 가능한 브라우저 저장소가 포인트나 구매 기록의 원본이 되지 않게 합니다.
 assert.doesNotMatch(app, /localStorage\.setItem/, "localStorage 쓰기가 남아 있습니다.");
@@ -114,6 +158,7 @@ assert.match(buildScript, /SUPABASE_URL/, "빌드에서 SUPABASE_URL을 읽지 �
 assert.match(buildScript, /SUPABASE_PUBLISHABLE_KEY/, "빌드에서 publishable key를 읽지 않습니다.");
 assert.doesNotMatch(buildScript, /SUPABASE_SERVICE|SERVICE_ROLE|SECRET_KEY/i, "빌드가 비밀키를 요구합니다.");
 assert.match(buildScript, /assets\/eco-polar-bear-pruni-cutout\.png/, "프로덕션 빌드에 프루니 캐릭터가 포함되지 않습니다.");
+assert.match(buildScript, /environment-data\.js/, "프로덕션 빌드에 환경 데이터 모듈이 포함되지 않습니다.");
 
 // 로그인부터 리포트까지 전체 사용자 여정에 필요한 화면과 원격 저장 동작을 회귀 검사합니다.
 for (const requiredHook of [
