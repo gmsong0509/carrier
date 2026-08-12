@@ -3,7 +3,7 @@
 ## PHASE 1 — 기본 웹앱
 
 - [x] 프로젝트 기본 구조 생성
-- [x] White + Blue 디자인 시스템
+- [x] Green + Blue ESG 디자인 시스템
 - [x] 모바일 반응형 레이아웃
 - [x] 하단 Navigation
 - [x] 홈 화면
@@ -135,12 +135,23 @@
 
 - [x] JavaScript 구문 검사
 - [x] UI data hook 누락 검사
-- [x] White + Blue / Warning Red 규칙 검사
+- [x] Green + Blue / Warning Red 규칙 검사
 - [x] localStorage 쓰기 제거 검사
 - [x] Supabase 테이블·RLS 구조 검사
 - [x] Render production build 검사
 - [x] GitHub Actions 품질 워크플로
 - [x] 배포 후 수동 E2E 시나리오
+
+## DESIGN UPDATE — GREEN ESG
+
+- [x] Primary Green #1F9D68 · Deep Green #157A55 적용
+- [x] 친환경 미션·포인트·레벨·리포트·리워드 Green 적용
+- [x] Carrier 에어컨·냉방·IoT 제어 Blue 적용
+- [x] 오류·위험·점검 필요 상태 Red 유지
+- [x] 연한 Green 페이지와 White 카드 구분
+- [x] 주요 텍스트·버튼 WCAG 대비 검사
+- [x] HTML·JavaScript·데이터 로직 무변경 확인
+- [x] 모바일 반응형·전체 기능 정적 회귀 검사
 
 
 ## FINAL CHECK

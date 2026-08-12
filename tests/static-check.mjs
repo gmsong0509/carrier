@@ -39,10 +39,32 @@ for (const hook of dataHooks) {
   assert.ok(html.includes(hook), `HTML에서 ${hook} 요소를 찾을 수 없습니다.`);
 }
 
-// 디자인 시스템과 모바일 우선 반응형 규칙을 정적으로 확인합니다.
+// Green 중심 ESG 디자인과 모바일 우선 반응형 규칙을 정적으로 확인합니다.
 assert.equal((css.match(/{/g) || []).length, (css.match(/}/g) || []).length, "CSS 괄호가 맞지 않습니다.");
-assert.match(css, /--blue-600:/, "Blue 상태 색상이 없습니다.");
-assert.match(css, /--red-600:/, "Red 경고 색상이 없습니다.");
+for (const [token, value] of Object.entries({
+  "--green-600": "#1f9d68",
+  "--green-800": "#157a55",
+  "--green-500": "#22a06b",
+  "--green-100": "#eaf8f1",
+  "--green-50": "#f3fbf7",
+  "--blue-600": "#2f80ed",
+  "--blue-50": "#eaf4ff",
+  "--red-600": "#e5484d",
+  "--red-100": "#fff1f1",
+  "--ink": "#1f2937",
+  "--muted": "#6b7280",
+  "--line": "#dcebe4",
+  "--page": "#f6fbf8",
+})) {
+  assert.ok(css.includes(`${token}: ${value}`), `${token} 컬러 토큰이 ${value}가 아닙니다.`);
+}
+
+assert.match(css, /\.hero-card\s*{[^}]*var\(--green-600\)[^}]*var\(--green-800\)/s, "홈 대표 배너가 Green 중심이 아닙니다.");
+assert.match(css, /\.home-mission\s*{[^}]*border-color:\s*var\(--green-200\)[^}]*var\(--green-50\)/s, "홈 미션 카드가 Green 중심이 아닙니다.");
+assert.match(css, /\.progress-track__fill\s*{[^}]*var\(--green-500\)[^}]*var\(--green-800\)/s, "미션 진행률이 Green 중심이 아닙니다.");
+assert.match(css, /\.wallet-card\s*{[^}]*var\(--green-600\)[^}]*var\(--green-800\)/s, "GREEN WALLET이 Green 중심이 아닙니다.");
+assert.match(css, /\.nav-item\.is-active\s*{[^}]*var\(--green-800\)[^}]*var\(--green-50\)/s, "선택 내비게이션이 Green이 아닙니다.");
+assert.match(css, /\.time-simulation-button\s*{[^}]*var\(--blue-600\)[^}]*var\(--blue-800\)/s, "에어컨 시간 제어가 Blue 중심이 아닙니다.");
 assert.match(css, /\.aircon-card\.is-danger/, "에어컨 비정상 Red 상태가 없습니다.");
 assert.match(css, /\.weather-card\.is-danger/, "날씨 오류 Red 상태가 없습니다.");
 assert.match(css, /@media\s*\(min-width:\s*\d+px\)/, "모바일 우선 반응형 구간이 없습니다.");
