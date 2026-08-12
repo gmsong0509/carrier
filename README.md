@@ -59,6 +59,13 @@ npm test
 
 배포 URL이 정해지면 Supabase Auth의 Site URL과 Redirect URLs에 해당 HTTPS 주소를 추가합니다. 이메일 확인 링크와 로그인 복귀 경로가 배포 사이트를 가리키는지 확인해야 합니다.
 
+현재 프로젝트에서는 [Supabase Auth URL Configuration](https://supabase.com/dashboard/project/jfpglikqchqtujdfepyn/auth/url-configuration)에 아래 값을 저장합니다.
+
+- Site URL: `https://carrier-greenon-jktv.onrender.com`
+- Redirect URLs: `https://carrier-greenon-jktv.onrender.com/**`
+
+운영 회원가입 메일을 일반 사용자에게 발송하려면 Supabase 기본 메일 제공자의 제한을 확인하고 필요 시 별도 SMTP 제공자를 연결합니다.
+
 ## 데이터와 보안
 
 데이터베이스 정의는 `supabase/schema.sql`에 있습니다. 사용자별 프로필, 미션 참여, 포인트 거래, 구매내역, 가상 에어컨 상태는 `auth.uid()` 기반 RLS로 분리됩니다. 포인트 지급과 구매 차감은 클라이언트가 잔액을 직접 수정하지 않고 데이터베이스 트리거에서 검증합니다.
