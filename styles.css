@@ -3570,3 +3570,345 @@ body.modal-open {
 .reward-modal__sheet.is-danger .purchase-button {
   background: var(--red-700);
 }
+
+/* 1024px 이상에서는 모바일 앱을 넓은 PC 대시보드 셸로 확장합니다. */
+@media (min-width: 1024px) {
+  body {
+    background:
+      radial-gradient(circle at 10% 8%, rgba(31, 157, 104, 0.1), transparent 28rem),
+      radial-gradient(circle at 92% 86%, rgba(47, 128, 237, 0.07), transparent 32rem),
+      var(--page);
+  }
+
+  .app-shell {
+    display: grid;
+    grid-template-rows: 82px minmax(calc(100vh - 82px), auto);
+    grid-template-columns: 220px minmax(0, 1fr);
+    width: min(100%, 1440px);
+    max-width: 1440px;
+    overflow: visible;
+    box-shadow: 0 0 80px rgba(25, 91, 65, 0.1);
+  }
+
+  .top-bar {
+    grid-row: 1;
+    grid-column: 1 / -1;
+    height: 82px;
+    padding: 0 32px;
+  }
+
+  .brand__mark {
+    width: 42px;
+    height: 42px;
+  }
+
+  .brand__text span {
+    font-size: 1.25rem;
+  }
+
+  .main-content {
+    grid-row: 2;
+    grid-column: 2;
+    min-width: 0;
+    padding: 38px 40px 64px;
+  }
+
+  .bottom-nav {
+    position: sticky;
+    top: 82px;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    grid-row: 2;
+    grid-column: 1;
+    grid-template-rows: repeat(4, 64px);
+    grid-template-columns: 1fr;
+    align-content: start;
+    align-self: start;
+    width: 100%;
+    max-width: none;
+    height: calc(100vh - 82px);
+    min-height: 0;
+    padding: 28px 16px;
+    margin: 0;
+    border-top: 0;
+    border-right: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(243, 251, 247, 0.97), rgba(255, 255, 255, 0.97));
+    box-shadow: none;
+  }
+
+  .nav-item {
+    flex-direction: row;
+    gap: 13px;
+    justify-content: flex-start;
+    min-height: 56px;
+    padding: 0 18px;
+    font-size: 0.84rem;
+    border-radius: 17px;
+  }
+
+  .nav-item svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .nav-item::before {
+    top: 50%;
+    left: 0;
+    width: 4px;
+    height: 28px;
+    transform: translateY(-50%) scaleY(0.4);
+  }
+
+  .nav-item.is-active::before {
+    transform: translateY(-50%) scaleY(1);
+  }
+
+  .view[data-view-panel="home"]:not([hidden]) {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 24px;
+    align-items: stretch;
+  }
+
+  .view[data-view-panel="home"] > .welcome-row {
+    grid-column: 1 / -1;
+    margin-bottom: 2px;
+  }
+
+  .welcome-row h1,
+  .subpage-heading h1 {
+    font-size: 2.15rem;
+  }
+
+  .view[data-view-panel="home"] > .hero-card {
+    grid-column: span 7;
+    min-height: 440px;
+    margin: 0;
+    padding: 40px 36px;
+  }
+
+  .hero-card__copy {
+    max-width: 56%;
+  }
+
+  .hero-card h2 {
+    font-size: 2.8rem;
+  }
+
+  .hero-illustration {
+    right: 10px;
+    bottom: -34px;
+    width: 300px;
+    height: 400px;
+    transform: none;
+  }
+
+  .view[data-view-panel="home"] > .weather-card {
+    grid-column: span 5;
+    margin: 0;
+    padding: 24px;
+  }
+
+  .hourly-forecast__scroll {
+    grid-auto-columns: 108px;
+  }
+
+  .view[data-view-panel="home"] > .air-quality-card {
+    grid-column: span 5;
+    margin: 0;
+    padding: 24px;
+  }
+
+  .view[data-view-panel="home"] > .green-air-guide {
+    grid-column: span 7;
+    align-content: center;
+    margin: 0;
+    padding: 24px;
+  }
+
+  .view[data-view-panel="home"] > .aircon-card {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+
+  .aircon-card {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.15fr);
+    gap: 14px 26px;
+    padding: 30px;
+  }
+
+  .aircon-card__heading {
+    grid-row: 1;
+    grid-column: 1 / -1;
+  }
+
+  .aircon-device {
+    grid-row: 2 / span 2;
+    grid-column: 1;
+    align-self: center;
+    width: 100%;
+    margin: 18px 0 0;
+  }
+
+  .aircon-stats {
+    grid-row: 2;
+    grid-column: 2;
+  }
+
+  .aircon-message {
+    grid-row: 3;
+    grid-column: 2;
+    margin-top: 0;
+  }
+
+  .simulation-panel {
+    display: grid;
+    grid-row: 4;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 14px;
+    margin-top: 6px;
+    padding: 20px;
+  }
+
+  .simulation-panel__heading {
+    grid-column: 1 / -1;
+    margin-bottom: 4px;
+  }
+
+  .temperature-control {
+    grid-row: 2;
+    grid-column: 1;
+  }
+
+  .aircon-control-grid {
+    grid-row: 2;
+    grid-column: 2;
+    margin-top: 0;
+  }
+
+  .time-simulation-button {
+    grid-row: 3;
+    grid-column: 1;
+    margin-top: 0;
+  }
+
+  .diagnostic-presets {
+    grid-row: 3;
+    grid-column: 2;
+    margin-top: 0;
+  }
+
+  .diagnostic-presets button {
+    min-height: 48px;
+  }
+
+  .view[data-view-panel="home"] > .home-mission {
+    grid-column: span 5;
+    margin: 0;
+  }
+
+  .view[data-view-panel="home"] > .tip-card {
+    grid-column: span 7;
+    margin: 0;
+  }
+
+  .view[data-view-panel="home"] > .section-block {
+    grid-column: 1 / -1;
+    margin-top: 8px;
+  }
+
+  .journey-card {
+    min-height: 178px;
+  }
+
+  .view[data-view-panel="mission"]:not([hidden]) {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+    gap: 24px;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  .view[data-view-panel="mission"] > .subpage-heading {
+    grid-column: 1 / -1;
+  }
+
+  .mission-detail-card,
+  .mission-guide {
+    margin-top: 0;
+  }
+
+  .mission-guide {
+    align-self: start;
+    padding: 24px;
+  }
+
+  .view[data-view-panel="reward"] {
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+
+  .reward-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .reward-card__visual {
+    min-height: 156px;
+  }
+
+  .view[data-view-panel="my"]:not([hidden]) {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 24px;
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+
+  .view[data-view-panel="my"] > .subpage-heading {
+    grid-column: 1 / -1;
+  }
+
+  .view[data-view-panel="my"] > .my-profile-card {
+    grid-column: span 9;
+    margin: 0;
+  }
+
+  .view[data-view-panel="my"] > .logout-button {
+    grid-column: span 3;
+    min-height: 100%;
+    margin: 0;
+  }
+
+  .view[data-view-panel="my"] > .wallet-card {
+    grid-column: span 5;
+    margin: 0;
+  }
+
+  .view[data-view-panel="my"] > .point-history {
+    grid-column: span 7;
+    margin: 0;
+  }
+
+  .view[data-view-panel="my"] > .green-level-card {
+    grid-column: span 5;
+    align-self: start;
+    margin: 0;
+  }
+
+  .view[data-view-panel="my"] > .green-report {
+    grid-column: span 7;
+    margin: 0;
+  }
+
+  .report-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .toast {
+    bottom: 28px;
+  }
+}

@@ -5,6 +5,8 @@
 - [x] 프로젝트 기본 구조 생성
 - [x] Green + Blue ESG 디자인 시스템
 - [x] 모바일 반응형 레이아웃
+- [x] 1024px 이상 PC 대시보드 레이아웃
+- [x] PC 좌측 Navigation과 다단 카드 그리드
 - [x] 하단 Navigation
 - [x] 홈 화면
 
@@ -166,6 +168,7 @@
 
 - [x] PROJECT.md 요구사항 누락 검사
 - [x] 모바일 화면 검사 (반응형 구조 자동 검사)
+- [x] PC 화면 검사 (1024px·1440px 대시보드 구조 자동 검사)
 - [x] 정상 상태 Blue 확인
 - [x] Warning/Error Red 확인
 - [x] Supabase 보안 확인

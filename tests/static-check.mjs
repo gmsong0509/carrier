@@ -92,6 +92,15 @@ assert.match(css, /\.app-shell\s*{[^}]*width:\s*100%[^}]*max-width:\s*720px/s, "
 assert.match(css, /\.bottom-nav\s*{[^}]*grid-template-columns:\s*repeat\(4,\s*1fr\)[^}]*width:\s*100%/s, "모바일 하단 메뉴가 4등분되지 않았습니다.");
 assert.match(css, /env\(safe-area-inset-bottom\)/, "모바일 안전 영역 처리가 없습니다.");
 assert.match(css, /@media\s*\(min-width:\s*600px\)/, "600px 이상 확장 레이아웃이 없습니다.");
+const desktopCss = css.slice(css.indexOf("@media (min-width: 1024px)"));
+assert.ok(desktopCss.length > 0, "1024px 이상 PC 레이아웃이 없습니다.");
+assert.match(desktopCss, /\.app-shell\s*{[^}]*grid-template-columns:\s*220px\s+minmax\(0,\s*1fr\)[^}]*max-width:\s*1440px/s, "PC 앱 셸이 1440px 대시보드 구조가 아닙니다.");
+assert.match(desktopCss, /\.bottom-nav\s*{[^}]*position:\s*sticky[^}]*grid-template-columns:\s*1fr/s, "PC 내비게이션이 좌측 사이드바로 전환되지 않습니다.");
+assert.match(desktopCss, /data-view-panel="home"[^}]*grid-template-columns:\s*repeat\(12,/s, "PC 홈 화면이 12열 그리드가 아닙니다.");
+assert.match(desktopCss, /\.reward-grid\s*{[^}]*repeat\(3,/s, "PC 리워드 목록이 3열이 아닙니다.");
+assert.match(desktopCss, /data-view-panel="my"[^}]*repeat\(12,/s, "PC MY 화면이 대시보드 그리드가 아닙니다.");
+assert.match(desktopCss, /data-view-panel="mission"\]:not\(\[hidden\]\)/, "PC 화면에서 숨긴 미션 패널을 보호하지 않습니다.");
+assert.match(desktopCss, /data-view-panel="my"\]:not\(\[hidden\]\)/, "PC 화면에서 숨긴 MY 패널을 보호하지 않습니다.");
 assert.equal((html.match(/data-nav-view=/g) || []).length, 4, "모바일 하단 메뉴 항목 수가 4개가 아닙니다.");
 assert.match(html, /src="assets\/greenon-mascot-body\.png"/, "GreenON 캐릭터 본체가 홈 히어로에 없습니다.");
 assert.match(html, /src="assets\/greenon-mascot-sprout\.png"/, "GreenON 캐릭터 새싹이 홈 히어로에 없습니다.");
