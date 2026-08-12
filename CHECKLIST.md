@@ -152,13 +152,14 @@
 
 - [x] Primary Green #1F9D68 · Deep Green #157A55 적용
 - [x] 친환경 미션·포인트·레벨·리포트·리워드 Green 적용
-- [x] Carrier 에어컨·냉방·IoT 제어 Blue 적용
+- [x] 우리 집 에어컨·냉방·IoT 제어 Green 적용
 - [x] 오류·위험·점검 필요 상태 Red 유지
 - [x] 연한 Green 페이지와 White 카드 구분
 - [x] 주요 텍스트·버튼 WCAG 대비 검사
 - [x] HTML·JavaScript·데이터 로직 무변경 확인
 - [x] 모바일 반응형·전체 기능 정적 회귀 검사
-- [x] Eco-Polar Bear 프루니 캐릭터 투명 PNG 홈 히어로 적용
+- [x] GreenON 새싹 캐릭터 투명 PNG 홈 히어로 적용
+- [x] 머리 위 새싹 분리 레이어 애니메이션 적용
 
 
 ## FINAL CHECK

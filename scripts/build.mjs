@@ -52,7 +52,8 @@ const publicFiles = [
   "supabase-client.js",
   "environment-data.js",
   "weather-service.js",
-  "assets/eco-polar-bear-pruni-cutout.png",
+  "assets/greenon-mascot-body.png",
+  "assets/greenon-mascot-sprout.png",
 ];
 
 await rm(outputRoot, { recursive: true, force: true });

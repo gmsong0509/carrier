@@ -23,7 +23,8 @@ const [html, css, app, supabase, environmentData, weather, schema, renderBluepri
   readProjectFile("scripts/build.mjs"),
 ]);
 
-const characterImage = await stat(path.join(projectRoot, "assets", "eco-polar-bear-pruni-cutout.png"));
+const mascotBodyImage = await stat(path.join(projectRoot, "assets", "greenon-mascot-body.png"));
+const mascotSproutImage = await stat(path.join(projectRoot, "assets", "greenon-mascot-sprout.png"));
 
 // 세 파일을 실행하지 않고 파싱해 배포 전에 문법 오류를 잡습니다.
 new vm.Script(app, { filename: "app.js" });
@@ -68,7 +69,8 @@ assert.match(css, /\.home-mission\s*{[^}]*border-color:\s*var\(--green-200\)[^}]
 assert.match(css, /\.progress-track__fill\s*{[^}]*var\(--green-500\)[^}]*var\(--green-800\)/s, "미션 진행률이 Green 중심이 아닙니다.");
 assert.match(css, /\.wallet-card\s*{[^}]*var\(--green-600\)[^}]*var\(--green-800\)/s, "GREEN WALLET이 Green 중심이 아닙니다.");
 assert.match(css, /\.nav-item\.is-active\s*{[^}]*var\(--green-800\)[^}]*var\(--green-50\)/s, "선택 내비게이션이 Green이 아닙니다.");
-assert.match(css, /\.time-simulation-button\s*{[^}]*var\(--blue-600\)[^}]*var\(--blue-800\)/s, "에어컨 시간 제어가 Blue 중심이 아닙니다.");
+assert.match(css, /\.time-simulation-button\s*{[^}]*var\(--green-600\)[^}]*var\(--green-800\)/s, "에어컨 시간 제어가 Green 중심이 아닙니다.");
+assert.match(css, /\.aircon-card\s*{[^}]*var\(--green-50\)/s, "우리 집 에어컨 카드가 Green 중심이 아닙니다.");
 assert.match(css, /\.aircon-card\.is-danger/, "에어컨 비정상 Red 상태가 없습니다.");
 assert.match(css, /\.weather-card\.is-danger/, "날씨 오류 Red 상태가 없습니다.");
 assert.match(css, /\.hourly-forecast__scroll\s*{[^}]*overflow-x:\s*auto/s, "시간대별 날씨의 모바일 가로 스크롤이 없습니다.");
@@ -91,9 +93,13 @@ assert.match(css, /\.bottom-nav\s*{[^}]*grid-template-columns:\s*repeat\(4,\s*1f
 assert.match(css, /env\(safe-area-inset-bottom\)/, "모바일 안전 영역 처리가 없습니다.");
 assert.match(css, /@media\s*\(min-width:\s*600px\)/, "600px 이상 확장 레이아웃이 없습니다.");
 assert.equal((html.match(/data-nav-view=/g) || []).length, 4, "모바일 하단 메뉴 항목 수가 4개가 아닙니다.");
-assert.match(html, /class="hero-character"[\s\S]*src="assets\/eco-polar-bear-pruni-cutout\.png"/, "프루니 캐릭터가 홈 히어로에 없습니다.");
+assert.match(html, /src="assets\/greenon-mascot-body\.png"/, "GreenON 캐릭터 본체가 홈 히어로에 없습니다.");
+assert.match(html, /src="assets\/greenon-mascot-sprout\.png"/, "GreenON 캐릭터 새싹이 홈 히어로에 없습니다.");
 assert.match(css, /\.hero-character\s*{[^}]*object-fit:\s*contain/s, "프루니 캐릭터의 반응형 표시 규칙이 없습니다.");
-assert.ok(characterImage.size > 0, "프루니 캐릭터 이미지 파일이 비어 있습니다.");
+assert.match(css, /\.hero-character--sprout\s*{[^}]*animation:\s*mascot-sprout-sway/s, "캐릭터 새싹 애니메이션이 없습니다.");
+assert.match(css, /@keyframes\s+mascot-sprout-sway/, "캐릭터 새싹 키프레임이 없습니다.");
+assert.ok(mascotBodyImage.size > 0, "GreenON 캐릭터 본체 이미지가 비어 있습니다.");
+assert.ok(mascotSproutImage.size > 0, "GreenON 캐릭터 새싹 이미지가 비어 있습니다.");
 for (const environmentHook of [
   "data-hourly-weather",
   "data-air-quality-pm10",
@@ -157,7 +163,8 @@ assert.equal((renderBlueprint.match(/sync:\s*false/g) || []).length, 2, "Render 
 assert.match(buildScript, /SUPABASE_URL/, "빌드에서 SUPABASE_URL을 읽지 않습니다.");
 assert.match(buildScript, /SUPABASE_PUBLISHABLE_KEY/, "빌드에서 publishable key를 읽지 않습니다.");
 assert.doesNotMatch(buildScript, /SUPABASE_SERVICE|SERVICE_ROLE|SECRET_KEY/i, "빌드가 비밀키를 요구합니다.");
-assert.match(buildScript, /assets\/eco-polar-bear-pruni-cutout\.png/, "프로덕션 빌드에 프루니 캐릭터가 포함되지 않습니다.");
+assert.match(buildScript, /assets\/greenon-mascot-body\.png/, "프로덕션 빌드에 GreenON 캐릭터 본체가 포함되지 않습니다.");
+assert.match(buildScript, /assets\/greenon-mascot-sprout\.png/, "프로덕션 빌드에 GreenON 캐릭터 새싹이 포함되지 않습니다.");
 assert.match(buildScript, /environment-data\.js/, "프로덕션 빌드에 환경 데이터 모듈이 포함되지 않습니다.");
 
 // 로그인부터 리포트까지 전체 사용자 여정에 필요한 화면과 원격 저장 동작을 회귀 검사합니다.
