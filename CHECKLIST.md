@@ -120,6 +120,7 @@
 - [x] Render 서비스 생성
 - [x] Git 저장소 연결
 - [x] 환경변수 등록
+- [x] Supabase Auth 운영 URL 설정
 - [x] Build 성공
 - [x] 배포 성공
 - [x] 배포 URL 접속
