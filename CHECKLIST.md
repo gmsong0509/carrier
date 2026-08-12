@@ -152,6 +152,7 @@
 - [x] 주요 텍스트·버튼 WCAG 대비 검사
 - [x] HTML·JavaScript·데이터 로직 무변경 확인
 - [x] 모바일 반응형·전체 기능 정적 회귀 검사
+- [x] Eco-Polar Bear 프루니 캠페인 이미지 반응형 적용
 
 
 ## FINAL CHECK

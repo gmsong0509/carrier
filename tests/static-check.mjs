@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import vm from "node:vm";
 import { fileURLToPath } from "node:url";
@@ -21,6 +21,8 @@ const [html, css, app, supabase, weather, schema, renderBlueprint, buildScript] 
   readProjectFile("render.yaml"),
   readProjectFile("scripts/build.mjs"),
 ]);
+
+const campaignImage = await stat(path.join(projectRoot, "assets", "eco-polar-bear-pruni.png"));
 
 // 세 파일을 실행하지 않고 파싱해 배포 전에 문법 오류를 잡습니다.
 new vm.Script(app, { filename: "app.js" });
@@ -81,6 +83,9 @@ assert.match(css, /\.bottom-nav\s*{[^}]*grid-template-columns:\s*repeat\(4,\s*1f
 assert.match(css, /env\(safe-area-inset-bottom\)/, "모바일 안전 영역 처리가 없습니다.");
 assert.match(css, /@media\s*\(min-width:\s*600px\)/, "600px 이상 확장 레이아웃이 없습니다.");
 assert.equal((html.match(/data-nav-view=/g) || []).length, 4, "모바일 하단 메뉴 항목 수가 4개가 아닙니다.");
+assert.match(html, /src="assets\/eco-polar-bear-pruni\.png"/, "Eco-Polar Bear 캠페인 이미지가 홈에 없습니다.");
+assert.match(css, /\.eco-campaign-visual\s*{[^}]*aspect-ratio:\s*4\s*\/\s*3/s, "캠페인 이미지의 모바일 크롭이 없습니다.");
+assert.ok(campaignImage.size > 0, "Eco-Polar Bear 캠페인 이미지 파일이 비어 있습니다.");
 
 // 조작 가능한 브라우저 저장소가 포인트나 구매 기록의 원본이 되지 않게 합니다.
 assert.doesNotMatch(app, /localStorage\.setItem/, "localStorage 쓰기가 남아 있습니다.");
@@ -108,6 +113,7 @@ assert.equal((renderBlueprint.match(/sync:\s*false/g) || []).length, 2, "Render 
 assert.match(buildScript, /SUPABASE_URL/, "빌드에서 SUPABASE_URL을 읽지 않습니다.");
 assert.match(buildScript, /SUPABASE_PUBLISHABLE_KEY/, "빌드에서 publishable key를 읽지 않습니다.");
 assert.doesNotMatch(buildScript, /SUPABASE_SERVICE|SERVICE_ROLE|SECRET_KEY/i, "빌드가 비밀키를 요구합니다.");
+assert.match(buildScript, /assets\/eco-polar-bear-pruni\.png/, "프로덕션 빌드에 캠페인 이미지가 포함되지 않습니다.");
 
 // 로그인부터 리포트까지 전체 사용자 여정에 필요한 화면과 원격 저장 동작을 회귀 검사합니다.
 for (const requiredHook of [

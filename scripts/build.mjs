@@ -51,10 +51,12 @@ const publicFiles = [
   "app.js",
   "supabase-client.js",
   "weather-service.js",
+  "assets/eco-polar-bear-pruni.png",
 ];
 
 await rm(outputRoot, { recursive: true, force: true });
 await mkdir(outputRoot, { recursive: true });
+await mkdir(path.join(outputRoot, "assets"), { recursive: true });
 await Promise.all(
   publicFiles.map((fileName) => copyFile(path.join(projectRoot, fileName), path.join(outputRoot, fileName))),
 );
